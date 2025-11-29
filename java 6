@@ -1,0 +1,274 @@
+import java.util.*;
+import java.io.*;
+
+/**
+ * Ride类，表示主题公园中的游乐设施
+ * 实现RideInterface接口
+ */
+public class Ride implements RideInterface {
+    private String rideName;
+    private String rideType;
+    private Employee operator;
+    private int maxRider;
+    private int numOfCycles;
+    
+    // 队列和历史记录集合
+    private Queue<Visitor> waitingQueue;
+    private LinkedList<Visitor> rideHistory;
+    
+    // 默认构造器
+    public Ride() {
+        this.rideName = "Unknown Ride";
+        this.rideType = "General";
+        this.operator = null;
+        this.maxRider = 2;
+        this.numOfCycles = 0;
+        this.waitingQueue = new LinkedList<>();
+        this.rideHistory = new LinkedList<>();
+    }
+    
+    // 参数化构造器
+    public Ride(String rideName, String rideType, Employee operator, int maxRider) {
+        this.rideName = rideName;
+        this.rideType = rideType;
+        this.operator = operator;
+        this.maxRider = maxRider;
+        this.numOfCycles = 0;
+        this.waitingQueue = new LinkedList<>();
+        this.rideHistory = new LinkedList<>();
+    }
+    
+    // Getters and Setters
+    public String getRideName() {
+        return rideName;
+    }
+    
+    public void setRideName(String rideName) {
+        this.rideName = rideName;
+    }
+    
+    public String getRideType() {
+        return rideType;
+    }
+    
+    public void setRideType(String rideType) {
+        this.rideType = rideType;
+    }
+    
+    public Employee getOperator() {
+        return operator;
+    }
+    
+    public void setOperator(Employee operator) {
+        this.operator = operator;
+    }
+    
+    public int getMaxRider() {
+        return maxRider;
+    }
+    
+    public void setMaxRider(int maxRider) {
+        this.maxRider = maxRider;
+    }
+    
+    public int getNumOfCycles() {
+        return numOfCycles;
+    }
+    
+    // Part 3: 队列管理方法
+    @Override
+    public void addVisitorToQueue(Visitor visitor) {
+        if (visitor != null) {
+            waitingQueue.add(visitor);
+            System.out.println("✓ " + visitor.getName() + " 已加入 " + rideName + " 的等待队列");
+        } else {
+            System.out.println("✗ 无法添加空游客到队列");
+        }
+    }
+    
+    @Override
+    public Visitor removeVisitorFromQueue() {
+        Visitor visitor = waitingQueue.poll();
+        if (visitor != null) {
+            System.out.println("✓ " + visitor.getName() + " 已从 " + rideName + " 的等待队列中移除");
+        } else {
+            System.out.println("✗ 队列为空，无法移除游客");
+        }
+        return visitor;
+    }
+    
+    @Override
+    public void printQueue() {
+        if (waitingQueue.isEmpty()) {
+            System.out.println(rideName + " - 等待队列为空");
+            return;
+        }
+        
+        System.out.println("=== " + rideName + " 等待队列 (" + waitingQueue.size() + " 人) ===");
+        int position = 1;
+        for (Visitor visitor : waitingQueue) {
+            System.out.println(position + ". " + visitor.getName() + " (ID: " + visitor.getVisitorId() + ")");
+            position++;
+        }
+        System.out.println();
+    }
+    
+    // Part 4A: 历史记录管理方法
+    @Override
+    public void addVisitorToHistory(Visitor visitor) {
+        if (visitor != null) {
+            rideHistory.add(visitor);
+            System.out.println("✓ " + visitor.getName() + " 已添加到 " + rideName + " 的历史记录");
+        } else {
+            System.out.println("✗ 无法添加空游客到历史记录");
+        }
+    }
+    
+    @Override
+    public boolean checkVisitorFromHistory(Visitor visitor) {
+        if (visitor == null) {
+            System.out.println("✗ 无法检查空游客");
+            return false;
+        }
+        
+        boolean found = rideHistory.contains(visitor);
+        System.out.println("ℹ " + visitor.getName() + " 在 " + rideName + " 历史记录中: " + found);
+        return found;
+    }
+    
+    @Override
+    public int numberOfVisitors() {
+        int count = rideHistory.size();
+        System.out.println("ℹ " + rideName + " 历史记录中的游客数量: " + count);
+        return count;
+    }
+    
+    @Override
+    public void printRideHistory() {
+        if (rideHistory.isEmpty()) {
+            System.out.println(rideName + " - 历史记录为空");
+            return;
+        }
+        
+        System.out.println("=== " + rideName + " 历史记录 (" + rideHistory.size() + " 人) ===");
+        Iterator<Visitor> iterator = rideHistory.iterator();
+        int count = 1;
+        while (iterator.hasNext()) {
+            Visitor visitor = iterator.next();
+            System.out.println(count + ". " + visitor.toString());
+            count++;
+        }
+        System.out.println();
+    }
+    
+    // Part 4B: 排序方法
+    public void sortRideHistory() {
+        if (rideHistory.isEmpty()) {
+            System.out.println("ℹ 历史记录为空，无需排序");
+            return;
+        }
+        
+        Collections.sort(rideHistory, new VisitorComparator());
+        System.out.println("✓ " + rideName + " 历史记录已按姓名升序、年龄降序排序");
+    }
+    
+    // Part 5: 运行游乐设施周期
+    @Override
+    public void runOneCycle() {
+        // 检查是否有操作员
+        if (operator == null) {
+            System.out.println("✗ 无法运行 " + rideName + " - 没有分配操作员");
+            return;
+        }
+        
+        // 检查队列是否为空
+        if (waitingQueue.isEmpty()) {
+            System.out.println("✗ 无法运行 " + rideName + " - 等待队列为空");
+            return;
+        }
+        
+        System.out.println("\n=== 运行 " + rideName + " (周期 " + (numOfCycles + 1) + ") ===");
+        System.out.println("操作员: " + operator.getName());
+        System.out.println("最大承载量: " + maxRider + " 人");
+        
+        int ridersThisCycle = 0;
+        List<Visitor> riders = new ArrayList<>();
+        
+        // 从队列中移除游客并添加到历史记录
+        while (ridersThisCycle < maxRider && !waitingQueue.isEmpty()) {
+            Visitor visitor = removeVisitorFromQueue();
+            if (visitor != null) {
+                addVisitorToHistory(visitor);
+                riders.add(visitor);
+                ridersThisCycle++;
+            }
+        }
+        
+        numOfCycles++;
+        System.out.println("✓ " + rideName + " 已完成周期 " + numOfCycles + 
+                          "，承载了 " + ridersThisCycle + " 名游客");
+        
+        // 显示本次周期的游客
+        if (!riders.isEmpty()) {
+            System.out.println("本次周期游客:");
+            for (int i = 0; i < riders.size(); i++) {
+                System.out.println("  " + (i + 1) + ". " + riders.get(i).getName());
+            }
+        }
+        System.out.println();
+    }
+    
+    // Part 6: 导出历史记录到文件
+    public void exportRideHistory(String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            for (Visitor visitor : rideHistory) {
+                // 使用CSV格式：姓名,年龄,联系方式,游客ID,是否有季票
+                writer.println(visitor.getName() + "," + 
+                              visitor.getAge() + "," + 
+                              visitor.getContactInfo() + "," + 
+                              visitor.getVisitorId() + "," + 
+                              visitor.hasSeasonPass());
+            }
+            System.out.println("✓ " + rideName + " 历史记录已导出到文件: " + filename);
+        } catch (IOException e) {
+            System.out.println("✗ 导出历史记录时出错: " + e.getMessage());
+        }
+    }
+    
+    // Part 7: 从文件导入历史记录
+    public void importRideHistory(String filename) {
+        int importedCount = 0;
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                try {
+                    String[] parts = line.split(",");
+                    if (parts.length == 5) {
+                        String name = parts[0];
+                        int age = Integer.parseInt(parts[1]);
+                        String contactInfo = parts[2];
+                        String visitorId = parts[3];
+                        boolean hasSeasonPass = Boolean.parseBoolean(parts[4]);
+                        
+                        Visitor visitor = new Visitor(name, age, contactInfo, visitorId, hasSeasonPass);
+                        addVisitorToHistory(visitor);
+                        importedCount++;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("✗ 解析行时出错: " + line);
+                }
+            }
+            System.out.println("✓ 从文件 " + filename + " 成功导入 " + importedCount + " 名游客历史记录");
+        } catch (IOException e) {
+            System.out.println("✗ 导入历史记录时出错: " + e.getMessage());
+        }
+    }
+    
+    @Override
+    public String toString() {
+        return "Ride{name='" + rideName + "', type='" + rideType + 
+               "', operator=" + (operator != null ? operator.getName() : "None") + 
+               ", maxRider=" + maxRider + ", cycles=" + numOfCycles + "}";
+    }
+}
