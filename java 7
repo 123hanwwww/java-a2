@@ -1,0 +1,206 @@
+import java.util.*;
+
+/**
+ * 主类，包含所有演示方法
+ */
+public class AssignmentTwo {
+    
+    public static void main(String[] args) {
+        AssignmentTwo assignment = new AssignmentTwo();
+        
+        System.out.println("=== PROG2004 作业2演示 ===\n");
+        
+        // 依次运行各个部分的演示
+        assignment.partThree();
+        assignment.partFourA();
+        assignment.partFourB();
+        assignment.partFive();
+        assignment.partSix();
+        assignment.partSeven();
+        
+        System.out.println("=== 所有演示完成 ===");
+    }
+    
+    public void partThree() {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("PART 3 - 等待队列演示");
+        System.out.println("=".repeat(50));
+        
+        // 创建员工和游乐设施
+        Employee operator = new Employee("John Operator", 30, "john@park.com", "E001", "Ride Operations");
+        Ride rollerCoaster = new Ride("雷霆过山车", "Thrill Ride", operator, 2);
+        
+        // 创建游客
+        Visitor[] visitors = {
+            new Visitor("张三", 25, "zhang@email.com", "V001", true),
+            new Visitor("李四", 30, "li@email.com", "V002", false),
+            new Visitor("王五", 22, "wang@email.com", "V003", true),
+            new Visitor("赵六", 28, "zhao@email.com", "V004", false),
+            new Visitor("钱七", 35, "qian@email.com", "V005", true)
+        };
+        
+        // 添加游客到队列
+        for (Visitor visitor : visitors) {
+            rollerCoaster.addVisitorToQueue(visitor);
+        }
+        
+        // 打印队列
+        rollerCoaster.printQueue();
+        
+        // 移除一个游客
+        rollerCoaster.removeVisitorFromQueue();
+        
+        // 再次打印队列
+        rollerCoaster.printQueue();
+    }
+    
+    public void partFourA() {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("PART 4A - 游乐设施历史记录演示");
+        System.out.println("=".repeat(50));
+        
+        Employee operator = new Employee("Sarah Manager", 35, "sarah@park.com", "E002", "Management");
+        Ride waterRide = new Ride("激流勇进", "Water Ride", operator, 4);
+        
+        // 创建游客
+        Visitor[] visitors = {
+            new Visitor("刘明", 20, "liu@email.com", "V101", false),
+            new Visitor("陈华", 32, "chen@email.com", "V102", true),
+            new Visitor("杨洋", 27, "yang@email.com", "V103", false),
+            new Visitor("吴刚", 45, "wu@email.com", "V104", true),
+            new Visitor("周婷", 19, "zhou@email.com", "V105", false)
+        };
+        
+        // 添加游客到历史记录
+        for (Visitor visitor : visitors) {
+            waterRide.addVisitorToHistory(visitor);
+        }
+        
+        // 检查特定游客
+        waterRide.checkVisitorFromHistory(visitors[2]);
+        waterRide.checkVisitorFromHistory(new Visitor("不存在", 0, "none", "V999", false));
+        
+        // 打印游客数量
+        waterRide.numberOfVisitors();
+        
+        // 打印历史记录
+        waterRide.printRideHistory();
+    }
+    
+    public void partFourB() {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("PART 4B - 历史记录排序演示");
+        System.out.println("=".repeat(50));
+        
+        Employee operator = new Employee("Tom Supervisor", 40, "tom@park.com", "E003", "Supervision");
+        Ride ferrisWheel = new Ride("摩天轮", "Family Ride", operator, 6);
+        
+        // 创建游客（包含重复姓名测试排序）
+        Visitor[] visitors = {
+            new Visitor("张三", 25, "zhang1@email.com", "V201", true),
+            new Visitor("李四", 30, "li@email.com", "V202", false),
+            new Visitor("张三", 20, "zhang2@email.com", "V203", true), // 同名，年龄不同
+            new Visitor("王五", 22, "wang@email.com", "V204", false),
+            new Visitor("赵六", 28, "zhao@email.com", "V205", true)
+        };
+        
+        // 添加游客到历史记录
+        for (Visitor visitor : visitors) {
+            ferrisWheel.addVisitorToHistory(visitor);
+        }
+        
+        System.out.println("排序前:");
+        ferrisWheel.printRideHistory();
+        
+        // 排序
+        ferrisWheel.sortRideHistory();
+        
+        System.out.println("排序后:");
+        ferrisWheel.printRideHistory();
+    }
+    
+    public void partFive() {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("PART 5 - 运行游乐设施周期演示");
+        System.out.println("=".repeat(50));
+        
+        Employee operator = new Employee("Lisa Controller", 28, "lisa@park.com", "E004", "Control");
+        Ride carousel = new Ride("旋转木马", "Kids Ride", operator, 3);
+        
+        // 创建10个游客
+        Visitor[] visitors = new Visitor[10];
+        for (int i = 0; i < visitors.length; i++) {
+            visitors[i] = new Visitor("游客" + (i + 1), 15 + i, "visitor" + (i + 1) + "@email.com", 
+                                    "V30" + i, i % 2 == 0);
+        }
+        
+        // 添加所有游客到队列
+        for (Visitor visitor : visitors) {
+            carousel.addVisitorToQueue(visitor);
+        }
+        
+        System.out.println("运行前的队列:");
+        carousel.printQueue();
+        
+        // 运行一个周期
+        carousel.runOneCycle();
+        
+        System.out.println("运行后的队列:");
+        carousel.printQueue();
+        
+        System.out.println("历史记录:");
+        carousel.printRideHistory();
+        
+        // 再运行一个周期
+        carousel.runOneCycle();
+        
+        System.out.println("第二次运行后的队列:");
+        carousel.printQueue();
+    }
+    
+    public void partSix() {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("PART 6 - 导出到文件演示");
+        System.out.println("=".repeat(50));
+        
+        Employee operator = new Employee("David Exporter", 33, "david@park.com", "E005", "IT");
+        Ride spaceRide = new Ride("太空探险", "Adventure Ride", operator, 4);
+        
+        // 创建游客并添加到历史记录
+        Visitor[] visitors = {
+            new Visitor("导出测试1", 25, "export1@email.com", "V401", true),
+            new Visitor("导出测试2", 30, "export2@email.com", "V402", false),
+            new Visitor("导出测试3", 22, "export3@email.com", "V403", true),
+            new Visitor("导出测试4", 28, "export4@email.com", "V404", false),
+            new Visitor("导出测试5", 35, "export5@email.com", "V405", true)
+        };
+        
+        for (Visitor visitor : visitors) {
+            spaceRide.addVisitorToHistory(visitor);
+        }
+        
+        // 导出到文件
+        spaceRide.exportRideHistory("ride_history_export.csv");
+        
+        System.out.println("导出的历史记录:");
+        spaceRide.printRideHistory();
+    }
+    
+    public void partSeven() {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("PART 7 - 从文件导入演示");
+        System.out.println("=".repeat(50));
+        
+        Employee operator = new Employee("Emma Importer", 29, "emma@park.com", "E006", "Data");
+        Ride newRide = new Ride("新游乐设施", "General Ride", operator, 5);
+        
+        // 从文件导入历史记录
+        newRide.importRideHistory("ride_history_export.csv");
+        
+        // 验证导入结果
+        System.out.println("导入后的游客数量: " + newRide.numberOfVisitors());
+        
+        System.out.println("导入的历史记录:");
+        newRide.printRideHistory();
+    }
+}
