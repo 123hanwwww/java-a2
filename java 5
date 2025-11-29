@@ -1,0 +1,20 @@
+import java.util.Comparator;
+
+/**
+ * Visitor比较器，用于对游客列表进行排序
+ * 按姓名升序，然后按年龄降序排序
+ */
+public class VisitorComparator implements Comparator<Visitor> {
+    
+    @Override
+    public int compare(Visitor v1, Visitor v2) {
+        // 首先按姓名升序排序
+        int nameComparison = v1.getName().compareTo(v2.getName());
+        if (nameComparison != 0) {
+            return nameComparison;
+        }
+        
+        // 如果姓名相同，按年龄降序排序
+        return Integer.compare(v2.getAge(), v1.getAge());
+    }
+}
