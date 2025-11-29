@@ -1,0 +1,47 @@
+/**
+ * Employee类，继承自Person，表示主题公园员工
+ */
+public class Employee extends Person {
+    private String employeeId;
+    private String department;
+    
+    // 默认构造器
+    public Employee() {
+        super();
+        this.employeeId = "E000";
+        this.department = "Operations";
+    }
+    
+    // 参数化构造器
+    public Employee(String name, int age, String contactInfo, String employeeId, String department) {
+        super(name, age, contactInfo);
+        this.employeeId = employeeId;
+        this.department = department;
+    }
+    
+    // Getters and Setters
+    public String getEmployeeId() {
+        return employeeId;
+    }
+    
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+    
+    public String getDepartment() {
+        return department;
+    }
+    
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+    
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeId='" + employeeId + '\'' +
+                ", department='" + department + '\'' +
+                ", " + super.toString() +
+                '}';
+    }
+}
