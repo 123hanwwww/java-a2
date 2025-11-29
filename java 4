@@ -1,0 +1,18 @@
+/**
+ * Ride接口，定义游乐设施必须实现的方法
+ */
+public interface RideInterface {
+    // 队列管理方法
+    void addVisitorToQueue(Visitor visitor);
+    Visitor removeVisitorFromQueue();
+    void printQueue();
+    
+    // 历史记录管理方法
+    void addVisitorToHistory(Visitor visitor);
+    boolean checkVisitorFromHistory(Visitor visitor);
+    int numberOfVisitors();
+    void printRideHistory();
+    
+    // 运行游乐设施
+    void runOneCycle();
+}
