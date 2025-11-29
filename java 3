@@ -1,0 +1,47 @@
+/**
+ * Visitor类，继承自Person，表示主题公园游客
+ */
+public class Visitor extends Person {
+    private String visitorId;
+    private boolean hasSeasonPass;
+    
+    // 默认构造器
+    public Visitor() {
+        super();
+        this.visitorId = "V000";
+        this.hasSeasonPass = false;
+    }
+    
+    // 参数化构造器
+    public Visitor(String name, int age, String contactInfo, String visitorId, boolean hasSeasonPass) {
+        super(name, age, contactInfo);
+        this.visitorId = visitorId;
+        this.hasSeasonPass = hasSeasonPass;
+    }
+    
+    // Getters and Setters
+    public String getVisitorId() {
+        return visitorId;
+    }
+    
+    public void setVisitorId(String visitorId) {
+        this.visitorId = visitorId;
+    }
+    
+    public boolean hasSeasonPass() {
+        return hasSeasonPass;
+    }
+    
+    public void setHasSeasonPass(boolean hasSeasonPass) {
+        this.hasSeasonPass = hasSeasonPass;
+    }
+    
+    @Override
+    public String toString() {
+        return "Visitor{" +
+                "visitorId='" + visitorId + '\'' +
+                ", hasSeasonPass=" + hasSeasonPass +
+                ", " + super.toString() +
+                '}';
+    }
+}
